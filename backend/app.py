@@ -139,7 +139,7 @@ def generate_response(message):
         chat_history.append({"role": "user", "content": message})
 
         stream = ollama.chat(
-            model="gemma:2b",
+            model="mistral",
             messages=chat_history,
             stream=True,
             options={
