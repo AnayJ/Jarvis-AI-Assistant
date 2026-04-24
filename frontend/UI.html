@@ -1,211 +1,322 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JARVIS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @keyframes grid-flow {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(50px); }
+      @keyframes grid-flow {
+        0% {
+          transform: translateY(0);
         }
+        100% {
+          transform: translateY(50px);
+        }
+      }
 
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
         }
+        50% {
+          opacity: 0.5;
+        }
+      }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
         }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
 
-        .animate-fade-in {
-            animation: fade-in 0.3s ease-out;
-        }
+      .animate-fade-in {
+        animation: fade-in 0.3s ease-out;
+      }
 
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
+      .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
 
-        .animate-bounce {
-            animation: bounce 1s infinite;
-        }
+      .animate-bounce {
+        animation: bounce 1s infinite;
+      }
 
-        .grid-background {
-            background-image:
-                linear-gradient(to right, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: grid-flow 20s linear infinite;
-        }
+      .grid-background {
+        background-image:
+          linear-gradient(
+            to right,
+            rgba(59, 130, 246, 0.1) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(59, 130, 246, 0.1) 1px,
+            transparent 1px
+          );
+        background-size: 50px 50px;
+        animation: grid-flow 20s linear infinite;
+      }
 
-        /* Custom scrollbar */
-        #chat::-webkit-scrollbar {
-            width: 8px;
-        }
+      /* Custom scrollbar */
+      #chat::-webkit-scrollbar {
+        width: 8px;
+      }
 
-        #chat::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.5);
-        }
+      #chat::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.5);
+      }
 
-        #chat::-webkit-scrollbar-thumb {
-            background: rgba(59, 130, 246, 0.5);
-            border-radius: 4px;
-        }
+      #chat::-webkit-scrollbar-thumb {
+        background: rgba(59, 130, 246, 0.5);
+        border-radius: 4px;
+      }
 
-        #chat::-webkit-scrollbar-thumb:hover {
-            background: rgba(59, 130, 246, 0.7);
-        }
+      #chat::-webkit-scrollbar-thumb:hover {
+        background: rgba(59, 130, 246, 0.7);
+      }
     </style>
-</head>
-<body class="m-0 overflow-hidden">
+  </head>
+  <body class="m-0 overflow-hidden">
     <!-- Main Container -->
-    <div class="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 relative overflow-hidden">
+    <div
+      class="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 relative overflow-hidden"
+    >
+      <!-- Animated background grid -->
+      <div class="absolute inset-0 opacity-20">
+        <div class="absolute inset-0 grid-background"></div>
+      </div>
 
-        <!-- Animated background grid -->
-        <div class="absolute inset-0 opacity-20">
-            <div class="absolute inset-0 grid-background"></div>
+      <!-- Glowing orbs -->
+      <div
+        class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse"
+      ></div>
+      <div
+        class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"
+        style="animation-delay: 1s"
+      ></div>
+
+      <!-- Header -->
+      <header
+        class="relative z-10 backdrop-blur-md bg-black/30 border-b border-blue-500/30"
+      >
+        <div
+          class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between"
+        >
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <div
+                class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center animate-pulse"
+              >
+                <svg
+                  class="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  ></path>
+                </svg>
+              </div>
+              <div
+                class="absolute inset-0 rounded-full bg-blue-400 blur-md opacity-50"
+              ></div>
+            </div>
+            <div>
+              <h1
+                class="text-2xl bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-400 bg-clip-text text-transparent font-semibold"
+              >
+                JARVIS
+              </h1>
+              <p class="text-xs text-cyan-400/70">
+                Just a teaser of Iron Man's Jarvis!
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+            <span class="text-xs text-green-400">Online</span>
+          </div>
         </div>
+      </header>
 
-        <!-- Glowing orbs -->
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-
-        <!-- Header -->
-        <header class="relative z-10 backdrop-blur-md bg-black/30 border-b border-blue-500/30">
-            <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="relative">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center animate-pulse">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </div>
-                        <div class="absolute inset-0 rounded-full bg-blue-400 blur-md opacity-50"></div>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-400 bg-clip-text text-transparent font-semibold">
-                            JARVIS
-                        </h1>
-                        <p class="text-xs text-cyan-400/70">Just a teaser of Iron Man's Jarvis!</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                    <span class="text-xs text-green-400">Online</span>
-                </div>
+      <!-- Chat Container -->
+      <main
+        id="chat"
+        class="relative z-10 max-w-4xl mx-auto px-4 py-6 overflow-y-auto"
+        style="height: calc(100vh - 180px)"
+      >
+        <div id="messages" class="space-y-4">
+          <!-- Welcome screen -->
+          <div
+            id="welcomeScreen"
+            class="flex flex-col items-center justify-center h-full text-center space-y-4"
+            style="margin-top: 100px"
+          >
+            <div class="relative">
+              <div
+                class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center"
+              >
+                <svg
+                  class="w-12 h-12 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  ></path>
+                </svg>
+              </div>
+              <div
+                class="absolute inset-0 rounded-full bg-blue-400 blur-2xl opacity-50 animate-pulse"
+              ></div>
             </div>
-        </header>
-
-        <!-- Chat Container -->
-        <main id="chat" class="relative z-10 max-w-4xl mx-auto px-4 py-6 overflow-y-auto" style="height: calc(100vh - 180px);">
-            <div id="messages" class="space-y-4">
-                <!-- Welcome screen -->
-                <div id="welcomeScreen" class="flex flex-col items-center justify-center h-full text-center space-y-4" style="margin-top: 100px;">
-                    <div class="relative">
-                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center">
-                            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </div>
-                        <div class="absolute inset-0 rounded-full bg-blue-400 blur-2xl opacity-50 animate-pulse"></div>
-                    </div>
-                    <h2 class="text-3xl bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
-                        Hello, I'm JARVIS
-                    </h2>
-                    <p class="text-cyan-400/70 max-w-md">
-                        Your AI assistant ready to help. Ask me anything or give me a task to complete.
-                    </p>
-                </div>
-            </div>
-        </main>
-
-        <!-- Input Box -->
-        <div class="fixed bottom-0 left-0 right-0 z-20 backdrop-blur-md bg-black/30 border-t border-blue-500/30">
-            <div class="max-w-4xl mx-auto px-4 py-4">
-                <div class="flex gap-2 items-center">
-                    <div class="flex-1 relative">
-                        <input
-                            id="input"
-                            type="text"
-                            placeholder="Message Jarvis..."
-                            class="w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-cyan-500/30 text-cyan-100 placeholder-cyan-400/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all"
-                        />
-                    </div>
-                    <button
-                        id="sendBtn"
-                        onclick="send()"
-                        class="px-4 py-3 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 text-white hover:from-blue-500 hover:to-cyan-500 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40"
-                    >
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                        </svg>
-                    </button>
-                    <button
-                        id="voiceBtn"
-                        onclick="startVoice()"
-                        class="px-4 py-3 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40"
-                    >
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+            <h2
+              class="text-3xl bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent"
+            >
+              Hello, I'm JARVIS
+            </h2>
+            <p class="text-cyan-400/70 max-w-md">
+              Your AI assistant ready to help. Ask me anything or give me a task
+              to complete.
+            </p>
+          </div>
         </div>
+      </main>
+
+      <!-- Input Box -->
+      <div
+        class="fixed bottom-0 left-0 right-0 z-20 backdrop-blur-md bg-black/30 border-t border-blue-500/30"
+      >
+        <div class="max-w-4xl mx-auto px-4 py-4">
+          <div class="flex gap-2 items-center">
+            <div class="flex-1 relative">
+              <input
+                id="input"
+                type="text"
+                placeholder="Message Jarvis..."
+                class="w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-cyan-500/30 text-cyan-100 placeholder-cyan-400/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all"
+              />
+            </div>
+            <button
+              id="sendBtn"
+              onclick="send()"
+              class="px-4 py-3 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 text-white hover:from-blue-500 hover:to-cyan-500 transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                ></path>
+              </svg>
+            </button>
+            <button
+              onclick="stopResponse()"
+              class="px-4 py-3 rounded-xl bg-red-600 text-white hover:bg-red-500"
+            >
+              ⛔
+            </button>
+            <button
+              id="voiceBtn"
+              onclick="startVoice()"
+              class="px-4 py-3 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        let isListening = false;
+      let controller = null;
+      let isListening = false;
 
-        // Hide welcome screen when first message is sent
-        function hideWelcome() {
-            const welcomeScreen = document.getElementById('welcomeScreen');
-            if (welcomeScreen) {
-                welcomeScreen.style.display = 'none';
-            }
+      // Hide welcome screen when first message is sent
+      function hideWelcome() {
+        const welcomeScreen = document.getElementById("welcomeScreen");
+        if (welcomeScreen) {
+          welcomeScreen.style.display = "none";
         }
+      }
 
-        // Send message
-        async function send(text = null) {
-            const input = document.getElementById('input');
-            const messages = document.getElementById('messages');
+      function stopResponse() {
+        if (controller) {
+          controller.abort();
+          controller = null;
+        }
+      }
 
-            const msg = text || input.value.trim();
-            if (!msg) return;
+      // Send message
+      async function send(text = null) {
+        const input = document.getElementById("input");
+        const messages = document.getElementById("messages");
 
-            hideWelcome();
+        const msg = text || input.value.trim();
+        if (!msg) return;
 
-            // Add user message
-            const userDiv = document.createElement('div');
-            userDiv.className = 'flex justify-end animate-fade-in';
-            userDiv.innerHTML = `
+        hideWelcome();
+
+        // Add user message
+        const userDiv = document.createElement("div");
+        userDiv.className = "flex justify-end animate-fade-in";
+        userDiv.innerHTML = `
                 <div class="max-w-[70%] px-4 py-3 rounded-2xl backdrop-blur-md bg-gradient-to-br from-blue-600/80 to-cyan-600/80 text-white border border-blue-400/30 shadow-lg shadow-blue-500/20">
                     <p class="text-sm leading-relaxed">${msg}</p>
-                    <span class="text-xs opacity-50 mt-1 block">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    <span class="text-xs opacity-50 mt-1 block">${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
                 </div>
             `;
-            messages.appendChild(userDiv);
-            input.value = '';
+        messages.appendChild(userDiv);
+        input.value = "";
 
-            // Add typing indicator
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'flex justify-start animate-fade-in';
-            typingDiv.id = 'typing';
-            typingDiv.innerHTML = `
+        // Add typing indicator
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "flex justify-start animate-fade-in";
+        typingDiv.id = "typing";
+        typingDiv.innerHTML = `
                 <div class="max-w-[70%] px-4 py-3 rounded-2xl backdrop-blur-md bg-slate-800/80 border border-cyan-500/30">
                     <div class="flex gap-1">
                         <div class="w-2 h-2 rounded-full bg-cyan-400 animate-bounce"></div>
@@ -214,108 +325,134 @@
                     </div>
                 </div>
             `;
-            messages.appendChild(typingDiv);
-            scrollToBottom();
+        messages.appendChild(typingDiv);
+        scrollToBottom();
 
-            // Simulate API call
-            try {
-                const res = await fetch('http://127.0.0.1:8000/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: msg })
-                });
+        // Simulate API call
+        try {
+          controller = new AbortController();
 
-                // Remove typing indicator
-                typingDiv.remove();
+          const res = await fetch("http://127.0.0.1:8000/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg }),
+            signal: controller.signal, //
+          });
 
-                // Add bot message
-                const botDiv = document.createElement('div');
-                botDiv.className = 'flex justify-start animate-fade-in';
-                botDiv.innerHTML = `
+          // Remove typing indicator
+          typingDiv.remove();
+
+          // Add bot message
+          const botDiv = document.createElement("div");
+          botDiv.className = "flex justify-start animate-fade-in";
+          botDiv.innerHTML = `
                     <div class="max-w-[70%] px-4 py-3 rounded-2xl backdrop-blur-md bg-slate-800/80 text-cyan-100 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
                         <p class="text-sm leading-relaxed"></p>
-                        <span class="text-xs opacity-50 mt-1 block">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        <span class="text-xs opacity-50 mt-1 block">${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
                     </div>
                 `;
-                messages.appendChild(botDiv);
-                const botText = botDiv.querySelector('p');
+          messages.appendChild(botDiv);
+          const botText = botDiv.querySelector("p");
 
-                const reader = res.body.getReader();
-                const decoder = new TextDecoder();
+          const reader = res.body.getReader();
+          const decoder = new TextDecoder();
 
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    botText.innerHTML += decoder.decode(value);
-                    scrollToBottom();
-                }
-            } catch (error) {
-                // Remove typing indicator
-                typingDiv.remove();
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            botText.innerHTML += decoder.decode(value);
+            scrollToBottom();
+          }
+        } catch (error) {
+          // Remove typing indicator if exists
+          const typing = document.getElementById("typing");
+          if (typing) typing.remove();
 
-                // Show fallback response
-                const botDiv = document.createElement('div');
-                botDiv.className = 'flex justify-start animate-fade-in';
-                botDiv.innerHTML = `
-                    <div class="max-w-[70%] px-4 py-3 rounded-2xl backdrop-blur-md bg-slate-800/80 text-cyan-100 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
-                        <p class="text-sm leading-relaxed">I'm Jarvis, your AI assistant. You said: "${msg}". I'm here to help you with any questions or tasks.</p>
-                        <span class="text-xs opacity-50 mt-1 block">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                    </div>
-                `;
-                messages.appendChild(botDiv);
-            }
+          //  If user stops the response
+          if (error.name === "AbortError") {
+            const messages = document.getElementById("messages");
+
+            const stopDiv = document.createElement("div");
+            stopDiv.className = "flex justify-start animate-fade-in";
+            stopDiv.innerHTML = `
+            <div class="max-w-[70%] px-4 py-3 rounded-2xl backdrop-blur-md bg-slate-800/80 text-red-300 border border-red-500/30 shadow-lg shadow-red-500/10">
+                <p class="text-sm leading-relaxed">You stopped the response</p>
+                <span class="text-xs opacity-50 mt-1 block">${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+            </div>
+        `;
+            messages.appendChild(stopDiv);
 
             scrollToBottom();
+            return;
+          }
+
+          // fallback error (existing behavior)
         }
 
-        // Voice input
-        function startVoice() {
-            if (isListening) return;
+        scrollToBottom();
+      }
 
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                const recognition = new SpeechRecognition();
+      // Voice input
+      function startVoice() {
+        if (isListening) return;
 
-                recognition.start();
-                isListening = true;
+        if (
+          "webkitSpeechRecognition" in window ||
+          "SpeechRecognition" in window
+        ) {
+          const SpeechRecognition =
+            window.SpeechRecognition || window.webkitSpeechRecognition;
+          const recognition = new SpeechRecognition();
 
-                const voiceBtn = document.getElementById('voiceBtn');
-                voiceBtn.className = 'px-4 py-3 rounded-xl bg-gradient-to-br from-red-600 to-red-500 text-white animate-pulse transition-all shadow-lg shadow-red-500/40';
+          recognition.start();
+          isListening = true;
 
-                recognition.onresult = function(event) {
-                    const text = event.results[0][0].transcript;
-                    send(text);
-                    isListening = false;
-                    voiceBtn.className = 'px-4 py-3 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40';
-                };
+          const voiceBtn = document.getElementById("voiceBtn");
+          voiceBtn.className =
+            "px-4 py-3 rounded-xl bg-gradient-to-br from-red-600 to-red-500 text-white animate-pulse transition-all shadow-lg shadow-red-500/40";
 
-                recognition.onerror = function() {
-                    isListening = false;
-                    voiceBtn.className = 'px-4 py-3 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40';
-                };
+          recognition.onresult = function (event) {
+            const text = event.results[0][0].transcript;
+            send(text);
+            isListening = false;
+            voiceBtn.className =
+              "px-4 py-3 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40";
+          };
 
-                recognition.onend = function() {
-                    isListening = false;
-                    voiceBtn.className = 'px-4 py-3 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40';
-                };
-            } else {
-                alert('Speech recognition is not supported in this browser.');
-            }
+          recognition.onerror = function () {
+            isListening = false;
+            voiceBtn.className =
+              "px-4 py-3 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40";
+          };
+
+          recognition.onend = function () {
+            isListening = false;
+            voiceBtn.className =
+              "px-4 py-3 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40";
+          };
+        } else {
+          alert("Speech recognition is not supported in this browser.");
         }
+      }
 
-        // Scroll to bottom
-        function scrollToBottom() {
-            const chat = document.getElementById('chat');
-            chat.scrollTop = chat.scrollHeight;
+      // Scroll to bottom
+      function scrollToBottom() {
+        const chat = document.getElementById("chat");
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+      // Enter key support
+      document.getElementById("input").addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          send();
         }
-
-        // Enter key support
-        document.getElementById('input').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                send();
-            }
-        });
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          stopResponse();
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
