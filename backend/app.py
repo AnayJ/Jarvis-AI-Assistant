@@ -91,10 +91,58 @@ def list_apps():
     apps = [p.info["name"] for p in psutil.process_iter(["name"])]
     return list(set(apps))
 
+def kill_mark_42():
+    import psutil
+
+    # whitelist
+    safe_processes = [
+        "python.exe",
+        "uvicorn.exe",
+        "explorer.exe",
+        "cmd.exe",
+        "powershell.exe",
+        "System",
+        "Idle"
+    ]
+
+    closed = []
+
+    for proc in psutil.process_iter(['name']):
+        try:
+            name = proc.info['name']
+
+            if not name:
+                continue
+
+            # skip safe processes
+            if name.lower() in [p.lower() for p in safe_processes]:
+                continue
+
+           
+            if any(app in name.lower() for app in [
+                "chrome", "edge", "firefox",
+                "code", "spotify", "vlc",
+                "notepad", "discord", "telegram", "steam"
+            ]):
+                proc.kill()
+                closed.append(name)
+
+        except:
+            pass
+
+    if closed:
+        return f"Mark 42 deployed: {', '.join(set(closed))}"
+    else:
+        return "Nothing to close, sir."
+
 
 #  COMMAND HANDLER
 def handle_command(message):
     msg = message.lower().strip()
+
+    if "kill mark 42" in msg:
+        return kill_mark_42()
+   
 
     if msg in ["hi","hello","hey"]:
         return "Hello sir, what can I do for you today?"
@@ -149,7 +197,7 @@ def generate_response(message):
         chat_history.append({"role": "user", "content": message})
 
         stream = ollama.chat(
-            model="mistral",
+            model="gemma4:e2b",
             messages=chat_history,
             stream=True,
             options={
