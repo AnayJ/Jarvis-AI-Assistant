@@ -13,24 +13,24 @@ Real-time streaming responses (ChatGPT-like typing)
 Conversation memory support
 Fast and lightweight local inference
 
-🎤 Voice Interaction
+🎤 Voice Interaction:
 Voice input using browser speech recognition
 Jarvis can speak responses back to the user
 Hands-free interaction support
 
-💻 Modern Futuristic UI
+💻 Modern Futuristic UI:
 Beautiful Iron Man inspired interface
 Animated glowing effects & glassmorphism design
 Responsive layout for desktop and mobile
 Real-time typing indicators
 
-⚡ Interruptible Responses
+⚡ Interruptible Responses:
 Stop AI generation anytime using:
 ESC key
 Stop button
 Instant response interruption for smoother UX
 
-🌐 Smart Website & Search Handling
+🌐 Smart Website & Search Handling:
 Jarvis can:
 Open websites dynamically
 Search the web instantly
@@ -41,7 +41,7 @@ open youtube
 open github
 search machine learning roadmap
 
-🖥️ Desktop Automation
+🖥️ Desktop Automation:
 
 Jarvis can control your PC using natural commands:
 
