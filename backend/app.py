@@ -8,8 +8,14 @@ from fastapi.responses import StreamingResponse
 import subprocess
 import webbrowser
 import psutil
-import pygetwindow as gw
 import time
+import os
+import webbrowser
+import subprocess
+
+GITHUB_REPO_URL = "https://github.com/AnayJ/Jarvis-AI-Assistant"
+VERCEL_URL = "https://fitness-tracker-vb2x.vercel.app"
+
 
 stopgeneration = False
 
@@ -63,27 +69,7 @@ def close_app(app_name):
         return f"Error closing app: {str(e)}"
 
 
-# SWITCH WINDOW
-def switch_window(app_name):
-    try:
-        windows = gw.getWindowsWithTitle(app_name)
 
-        if not windows:
-            return f"No window found for {app_name}"
-
-        win = windows[0]
-
-        if win.isMinimized:
-            win.restore()
-            time.sleep(0.5)
-
-        win.activate()
-        time.sleep(0.5)
-
-        return f"Switched to {win.title} 🔄"
-
-    except Exception as e:
-        return f"Error switching window: {str(e)}"
 
 
 #  LIST RUNNING APPS (for debugging / smart matching)
@@ -91,57 +77,52 @@ def list_apps():
     apps = [p.info["name"] for p in psutil.process_iter(["name"])]
     return list(set(apps))
 
-def kill_mark_42():
-    import psutil
+def run_command(cmd):
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    return result.stdout + result.stderr
 
-    # whitelist
-    safe_processes = [
-        "python.exe",
-        "uvicorn.exe",
-        "explorer.exe",
-        "cmd.exe",
-        "powershell.exe",
-        "System",
-        "Idle"
-    ]
 
-    closed = []
+def deploy_mark_42():
+    try:
+        log = ""
 
-    for proc in psutil.process_iter(['name']):
-        try:
-            name = proc.info['name']
+        # 1. Git add
+        log += run_command("git add .")
 
-            if not name:
-                continue
+        # 2. Commit
+        log += run_command('git commit -m " Deploy via Jarvis"')
 
-            # skip safe processes
-            if name.lower() in [p.lower() for p in safe_processes]:
-                continue
+        # 3. Push to GitHub
+        log += run_command("git push origin main")
 
-           
-            if any(app in name.lower() for app in [
-                "chrome", "edge", "firefox",
-                "code", "spotify", "vlc",
-                "notepad", "discord", "telegram", "steam"
-            ]):
-                proc.kill()
-                closed.append(name)
+        # 4. Open dashboards
+        webbrowser.open(GITHUB_REPO_URL)
+        webbrowser.open(VERCEL_URL)
 
-        except:
-            pass
+        return "MARK 42 DEPLOYED SUCCESSFULLY. SYSTEMS ONLINE."
 
-    if closed:
-        return f"Mark 42 deployed: {', '.join(set(closed))}"
-    else:
-        return "Nothing to close, sir."
+    except Exception as e:
+        return f" Deployment failed: {str(e)}"
+    
 
+import requests
+
+RENDER_HOOK = "https://api.render.com/deploy/srv-d8f85md9j78s73fuad9g?key=HcWVX542GvY"
+
+def trigger_render():
+    try:
+        requests.post(RENDER_HOOK)
+        # return "Render deployment triggered"
+    except Exception as e:
+        return f"Render deploy failed: {str(e)}"
 
 #  COMMAND HANDLER
 def handle_command(message):
+
+    
     msg = message.lower().strip()
 
-    if "kill mark 42" in msg:
-        return kill_mark_42()
+
    
 
     if msg in ["hi","hello","hey"]:
@@ -168,6 +149,10 @@ def handle_command(message):
 
         # Otherwise treat it as an app
         return open_app(target)
+    
+    elif msg == "deploy mark 42":
+         webbrowser.open("https://fitness-tracker-vb2x.vercel.app")
+         return deploy_mark_42(), trigger_render()
 
     # Search
     elif msg.startswith("search "):
