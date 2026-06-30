@@ -12,6 +12,10 @@ import time
 import os
 import webbrowser
 import subprocess
+import requests
+
+RENDER_HOOK = "https://api.render.com/deploy/srv-d8f85md9j78s73fuad9g?key=HcWVX542GvY"
+
 
 GITHUB_REPO_URL = "https://github.com/AnayJ/Jarvis-AI-Assistant"
 VERCEL_URL = "https://fitness-tracker-vb2x.vercel.app"
@@ -81,40 +85,27 @@ def run_command(cmd):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     return result.stdout + result.stderr
 
-
-def deploy_mark_42():
-    try:
-        log = ""
-
-        # 1. Git add
-        log += run_command("git add .")
-
-        # 2. Commit
-        log += run_command('git commit -m " Deploy via Jarvis"')
-
-        # 3. Push to GitHub
-        log += run_command("git push origin main")
-
-        # 4. Open dashboards
-        webbrowser.open(GITHUB_REPO_URL)
-        webbrowser.open(VERCEL_URL)
-
-        return "MARK 42 DEPLOYED SUCCESSFULLY. SYSTEMS ONLINE."
-
-    except Exception as e:
-        return f" Deployment failed: {str(e)}"
-    
-
-import requests
-
-RENDER_HOOK = "https://api.render.com/deploy/srv-d8f85md9j78s73fuad9g?key=HcWVX542GvY"
-
 def trigger_render():
     try:
         requests.post(RENDER_HOOK)
         # return "Render deployment triggered"
     except Exception as e:
         return f"Render deploy failed: {str(e)}"
+    
+def deploy_mark_42():
+    run_command("git add .")
+    run_command('git commit -m "Deploy Mark 42"')
+    run_command("git push origin main")
+
+    trigger_render()
+
+    webbrowser.open("https://fitness-tracker-vb2x.vercel.app")
+
+    return "Mark 42 Deployed, All Systems Online Sir."
+    
+
+
+
 
 #  COMMAND HANDLER
 def handle_command(message):
@@ -151,8 +142,7 @@ def handle_command(message):
         return open_app(target)
     
     elif msg == "deploy mark 42":
-         webbrowser.open("https://fitness-tracker-vb2x.vercel.app")
-         return deploy_mark_42(), trigger_render()
+         return deploy_mark_42()
 
     # Search
     elif msg.startswith("search "):
