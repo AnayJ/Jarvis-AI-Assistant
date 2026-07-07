@@ -1,4 +1,6 @@
-
+<p align="center">
+  <img src="assets/banner.png" alt="JARVIS Banner" width="50%">
+</p>
 
 Jarvis-AI-Assistant 🤖⚡
 
