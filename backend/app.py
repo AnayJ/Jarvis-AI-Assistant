@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import ollama
+import os
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://172.20.0.1:11434")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
+
+client = ollama.Client(host=OLLAMA_HOST)
 from fastapi.middleware.cors import (
     CORSMiddleware,
 )  # safety ke liye hai, connection b/w backend & frontend
@@ -9,7 +14,7 @@ import subprocess
 import webbrowser
 import psutil
 import time
-import os
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
 import webbrowser
 import subprocess
 import requests
@@ -171,8 +176,8 @@ def generate_response(message):
 
         chat_history.append({"role": "user", "content": message})
 
-        stream = ollama.chat(
-            model="gemma4:e2b",
+        stream = client.chat(
+            model=OLLAMA_MODEL,
             messages=chat_history,
             stream=True,
             options={
@@ -201,7 +206,13 @@ def generate_response(message):
 @app.post("/chat")
 def chat(req: Request):
     return StreamingResponse(generate_response(req.message), media_type="text/plain")
-
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy",
+        "service": "Jarvis",
+        "server": "Edith"
+    }
 @app.post("/stop")
 def stop():
     global stop_generation
