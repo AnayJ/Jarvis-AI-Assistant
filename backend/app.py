@@ -10,6 +10,8 @@ from fastapi.middleware.cors import (
     CORSMiddleware,
 )  # safety ke liye hai, connection b/w backend & frontend
 from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse
+from pathlib import Path
 import subprocess
 import webbrowser
 import psutil
@@ -202,6 +204,11 @@ def generate_response(message):
     except Exception as e:
         yield f" Error: {str(e)}"
 
+FRONTEND = Path(__file__).parent.parent / "frontend" / "UI.html"
+
+@app.get("/")
+def home():
+    return FileResponse(FRONTEND)
 
 @app.post("/chat")
 def chat(req: Request):
