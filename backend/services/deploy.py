@@ -1,7 +1,7 @@
 import webbrowser
 import subprocess
 import requests
-from config import *
+from backend.config import *
 def run_command(cmd):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     return result.stdout + result.stderr

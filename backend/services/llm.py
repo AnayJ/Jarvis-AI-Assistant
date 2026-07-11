@@ -1,6 +1,8 @@
-from config import client
-from config import OLLAMA_MODEL
-from handle import handle_command
+from backend.config import client
+from backend.config import OLLAMA_MODEL
+from backend.services.handle import handle_command
+import json
+
 chat_history = [
     {
         "role": "system",
@@ -15,10 +17,6 @@ def generate_response(message):
     stop_generation = False  # reset
 
     try:
-        command_result = handle_command(message)
-        if command_result:
-            yield command_result
-            return
 
         chat_history.append({"role": "user", "content": message})
 

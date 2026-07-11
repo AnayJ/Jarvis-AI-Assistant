@@ -201,8 +201,8 @@
               Hello, I'm JARVIS
             </h2>
             <p class="text-cyan-400/70 max-w-md">
-              Your AI assistant ready to help. Ask me anything or give me a task
-              to complete.
+              Jarvis is here to help. Ask me anything or give me a task to
+              complete.
             </p>
           </div>
         </div>
@@ -331,6 +331,16 @@
         // Simulate API call
         try {
           controller = new AbortController();
+
+          const cmd = await fetch("/command", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: msg }),
+          });
+
+          const command = await cmd.json();
 
           const res = await fetch("/chat", {
             method: "POST",

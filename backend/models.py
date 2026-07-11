@@ -1,3 +1,3 @@
 from pydantic import BaseModel
-class Request(BaseModel):
+class ChatRequest(BaseModel):
     message: str

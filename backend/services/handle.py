@@ -1,7 +1,7 @@
 import webbrowser
 import subprocess
 import psutil
-from deploy import deploy_mark_42
+from backend.services.deploy import deploy_mark_42
 
 def list_apps():
     apps = [p.info["name"] for p in psutil.process_iter(["name"])]
@@ -40,40 +40,58 @@ def handle_command(message):
     if msg in ["hi", "hello", "hey"]:
         return "Hello sir, what can I do for you today?"
 
+    #OPEN#
+
     if msg.startswith("open "):
         target = msg.replace("open ", "").strip()
 
-        # If user typed a domain-like name or common website
-        if "." in target or target in [
-            "youtube",
-            "google",
-            "github",
-            "twitter",
-            "linkedin",
-        ]:
-            # add https://www if not a domain
-            if "." not in target:
-                url = f"https://{target}.com"
-            else:
-                url = f"https://{target}"
-            webbrowser.open(url)
-            return f"Opening {url} "
+        websites = {
+            "youtube": "https://youtube.com",
+            "google": "https://google.com",
+            "github": "https://github.com",
+            "linkedin": "https://linkedin.com",
+            "twitter": "https://twitter.com",
+        }
 
-        # Otherwise treat it as an app
+        if target in websites:
+            return {
+                "type": "action",
+                "action": "open_url",
+                "url": websites[target],
+                "message": f"Opening {target.title()} 🌐"
+            }
+
+        if "." in target:
+            return {
+                "type": "action",
+                "action": "open_url",
+                "url": f"https://{target}",
+                "message": f"Opening {target} 🌐"
+            }
+
         return open_app(target)
 
-    elif msg == "deploy mark 42":
+    #DEPLOY#
+
+    if msg == "deploy mark 42":
         return deploy_mark_42()
 
-    # Search
-    elif msg.startswith("search "):
-        query = msg.replace("search ", "")
-        webbrowser.open(f"https://www.google.com/search?q={query}")
-        return f"Searching for {query} "
+    #SEARCH#
 
-    # Close apps
-    elif msg.startswith("close "):
-        app = msg.replace("close ", "")
+    if msg.startswith("search "):
+        query = msg.replace("search ", "").strip()
+
+        return {
+            "type": "action",
+            "action": "open_url",
+            "url": f"https://www.google.com/search?q={query}",
+            "message": f"Searching for {query} 🔍"
+        }
+
+    #CLOSE#
+
+    if msg.startswith("close "):
+        app = msg.replace("close ", "").strip()
         return close_app(app)
 
     return None
