@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 
-from config import *
+from config import OLLAMA_HOST, OLLAMA_MODEL
+from llm import generate_response
+from handle import handle_command
+
 from models import Request
-from llm import *
-from deploy import *
-from handle import *
+
+
 from fastapi.middleware.cors import (
     CORSMiddleware,
 )
