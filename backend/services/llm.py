@@ -2,13 +2,8 @@ from backend.config import client
 from backend.config import OLLAMA_MODEL
 from backend.services.handle import handle_command
 import json
+import backend.services.state as state
 
-chat_history = [
-    {
-        "role": "system",
-        "content": "You are Jarvis, an AI assistant that can control the user's PC safely.",
-    }
-]
 
 
 def generate_response(message):
