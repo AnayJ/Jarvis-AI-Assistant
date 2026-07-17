@@ -332,22 +332,21 @@
         try {
           controller = new AbortController();
 
-          const cmd = await fetch("/command", {
+          const res = await fetch("http://127.0.0.1:8000/chat", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ message: msg }),
+            signal: controller.signal,
           });
 
-          const command = await cmd.json();
+          if (!res.ok) {
+            throw new Error(await res.text());
+          }
 
-          const res = await fetch("/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: msg }),
-            signal: controller.signal, //
-          });
+          console.log(res.status);
+          console.log(res.body);
 
           // Remove typing indicator
           typingDiv.remove();
@@ -370,7 +369,7 @@
           while (true) {
             const { done, value } = await reader.read();
             if (done) break;
-            botText.innerHTML += decoder.decode(value);
+            botText.textContent += decoder.decode(value);
             scrollToBottom();
           }
         } catch (error) {

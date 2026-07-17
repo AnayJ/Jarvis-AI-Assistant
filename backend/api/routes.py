@@ -7,7 +7,7 @@ from fastapi.responses import FileResponse
 from pathlib import Path
 from backend.services.llm import generate_response
 from backend.services.handle import handle_command
-from backend.config import ChatRequest
+from backend.models import ChatRequest
 
 stopgeneration = False
 

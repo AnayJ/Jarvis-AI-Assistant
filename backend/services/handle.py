@@ -54,20 +54,12 @@ def handle_command(message):
         }
 
         if target in websites:
-            return {
-                "type": "action",
-                "action": "open_url",
-                "url": websites[target],
-                "message": f"Opening {target.title()} 🌐"
-            }
+            webbrowser.open(websites[target])
+            return f"Opening {target.title()} 🌐"
 
         if "." in target:
-            return {
-                "type": "action",
-                "action": "open_url",
-                "url": f"https://{target}",
-                "message": f"Opening {target} 🌐"
-            }
+            webbrowser.open(f"https://{target}")
+            return f"Opening {target} 🌐"
 
         return open_app(target)
 
@@ -80,13 +72,10 @@ def handle_command(message):
 
     if msg.startswith("search "):
         query = msg.replace("search ", "").strip()
+        webbrowser.open(f"https://www.google.com/search?q={query}")
+        return f"Searching for {query} 🔍"
 
-        return {
-            "type": "action",
-            "action": "open_url",
-            "url": f"https://www.google.com/search?q={query}",
-            "message": f"Searching for {query} 🔍"
-        }
+
 
     #CLOSE#
 
