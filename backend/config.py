@@ -1,7 +1,8 @@
 import os
 import ollama
 
-OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://172.20.0.1:11434")
+#OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://172.20.0.1:11434")
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
 
 client = ollama.Client(host=OLLAMA_HOST)
