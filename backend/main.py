@@ -5,6 +5,12 @@ from backend.api.chat import router as chat_router
 from backend.api.command import router as command_router
 from backend.api.health import router as health_router
 from backend.api.routes import *
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+
+app = FastAPI()
+
+app.mount("/assets", StaticFiles(directory="/app/assets"), name="assets")
 
 app = FastAPI()
 
