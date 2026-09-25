@@ -12,7 +12,6 @@ app = FastAPI()
 
 app.mount("/assets", StaticFiles(directory="/app/assets"), name="assets")
 
-app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
