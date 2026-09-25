@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+ollama
+openai
+pydantic
+python-multipart
+psutil
+pygetwindow
+pyautogui
+requests

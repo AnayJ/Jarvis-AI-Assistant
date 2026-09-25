@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JARVIS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      /* Local Assets Fonts */
+      @font-face {
+        font-family: "AmericanCaptain";
+        src: url("../assets/AmericanCaptain-MdEY.otf") format("opentype");
+      }
+
+      @font-face {
+        font-family: "Avengero";
+        src: url("../assets/AvengeroRegular-zvgl.ttf") format("truetype");
+      }
+
+      @font-face {
+        font-family: "IronManOfWar2";
+        src: url("../assets/IronManOfWar2Ncv-E85l.ttf") format("truetype");
+      }
+
+      .font-jarvis-logo {
+        font-family: "AmericanCaptain", sans-serif;
+        letter-spacing: 0.05em;
+        color: #dbeaff;
+      }
+
+      .font-jarvis-ui {
+        font-family: "AmericanCaptain", sans-serif;
+        letter-spacing: 0.08em;
+      }
+
+      .font-avengero {
+        font-family: "AmericanCaptain", sans-serif;
+        color: #dbeaff;
+      }
+
+      /* Background Gradient */
+      .bg-ironman-screen {
+        position: relative;
+        background-image:
+          linear-gradient(180deg, rgba(0, 4, 12, 0.34) 0%, rgba(0, 5, 15, 0.08) 46%, rgba(0, 4, 11, 0.58) 100%),
+          linear-gradient(90deg, rgba(0, 4, 12, 0.32) 0%, rgba(0, 8, 19, 0.02) 50%, rgba(0, 4, 12, 0.3) 100%),
+          url("../assets/arc.jpg");
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        animation: hud-breathe 7s ease-in-out infinite;
+        transform-origin: center;
+      }
+
+      .bg-ironman-screen::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, rgba(4, 25, 49, 0.74) 0%, transparent 18%, transparent 82%, rgba(3, 16, 34, 0.62) 100%),
+          linear-gradient(180deg, rgba(2, 7, 18, 0.42) 0%, transparent 18%, transparent 76%, rgba(1, 6, 16, 0.72) 100%);
+        mix-blend-mode: multiply;
+        opacity: 0.72;
+      }
+
+      .bg-ironman-screen::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 2, 8, 0.54) 100%);
+      }
+
+      /* Exact Figma Design Linear Gradient */
+      .bg-input-gradient {
+        opacity: 0.60;
+        
+        background: linear-gradient(90deg, #B6D7FF 0%, #18448F 100%);
+      }
+
+      @keyframes hud-breathe {
+        0%, 100% {
+          background-position: center center;
+        }
+        50% {
+          background-position: center 1.2%;
+        }
+      }
+
+      /* Custom Chat Scrollbar */
+      #chat::-webkit-scrollbar {
+        width: 6px;
+      }
+      #chat::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      #chat::-webkit-scrollbar-thumb {
+        background: rgba(182, 215, 255, 0.35);
+        border-radius: 9999px;
+      }
+      #chat::-webkit-scrollbar-thumb:hover {
+        background: rgba(182, 215, 255, 0.6);
+      }
+
+      @keyframes message-pop {
+        from {
+          opacity: 0;
+          transform: translateY(12px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .animate-message {
+        animation: message-pop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      #messages {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        min-height: 100%;
+        justify-content: flex-end;
+      }
+
+      .message-row {
+        display: flex;
+        width: 100%;
+      }
+
+      .message-row.user {
+        justify-content: flex-end;
+      }
+
+      .message-row.jarvis {
+        justify-content: flex-start;
+      }
+
+      .chat-bubble {
+        border-radius: 14px;
+        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.35);
+        font-family: "AmericanCaptain", sans-serif;
+        line-height: 1.05;
+      }
+
+      .user-bubble {
+        width: fit-content;
+        max-width: min(34vw, 300px);
+        padding: 14px 20px 11px;
+        border-radius: 14px 4px 14px 14px;
+        background: linear-gradient(90deg, #B6D7FF 0%, #18448F 100%);
+        color: #0b1a2d;
+      }
+
+      .jarvis-bubble {
+        width: fit-content;
+        max-width: min(52vw, 610px);
+        padding: 14px 22px 11px;
+        border-radius: 4px 14px 14px 14px;
+        background: linear-gradient(90deg, #B6D7FF 0%, #18448F 100%);
+        color: #0b1a2d;
+      }
+
+      .chat-text {
+        margin: 0;
+        font-size: clamp(17px, 1.45vw, 23px);
+        letter-spacing: 0.055em;
+        text-transform: uppercase;
+      }
+
+      .chat-time {
+        display: block;
+        margin-top: 7px;
+        color: rgba(11, 26, 45, 0.65);
+        font-family: "AmericanCaptain", sans-serif;
+        font-size: 12px;
+        letter-spacing: 0.06em;
+      }
+
+      .typing-bubble {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        min-height: 44px;
+      }
+
+      .typing-bubble span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #0b1a2d;
+        animation: typing 1s infinite ease-in-out;
+      }
+
+      .typing-bubble span:nth-child(2) { animation-delay: 0.15s; }
+      .typing-bubble span:nth-child(3) { animation-delay: 0.3s; }
+
+      @keyframes typing {
+        0%, 70%, 100% { transform: translateY(0); opacity: 0.35; }
+        35% { transform: translateY(-5px); opacity: 1; }
+      }
+
+      @media (max-width: 700px) {
+        .user-bubble,
+        .jarvis-bubble {
+          max-width: 82vw;
+        }
+
+        .chat-text {
+          font-size: 16px;
+        }
+      }
+
+      #heroText {
+        margin-top: 360px;
+        position: relative;
+        z-index: 12;
+      }
+
+      #heroText p {
+        margin: 0;
+        font-size: 30px;
+        line-height: 1.1;
+        letter-spacing: 0.04em;
+      }
+
+      .composer-footer {
+        width: min(78.5vw, 1315px);
+        max-width: 1315px;
+      }
+
+      .send-btn {
+        width: 60px;
+        height: 60px;
+        flex-basis: 60px;
+        border-radius: 12px;
+        background: #027da8;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      }
+
+      .stop-btn {
+        width: 60px;
+        height: 60px;
+        flex-basis: 60px;
+        border-radius: 12px;
+        background: #681b22;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      }
+
+      @media (max-width: 700px) {
+        .composer-footer { width: calc(100% - 24px); }
+        .send-btn,
+        .stop-btn { width: 50px; height: 50px; flex-basis: 50px; }
+      }
+    </style>
+  </head>
+  <body class="m-0 overflow-hidden select-none bg-ironman-screen h-screen w-screen text-white font-jarvis-ui">
+    <div class="relative h-full w-full flex flex-col justify-between overflow-hidden">
+      
+      <!-- Top Header Bar -->
+      <header class="relative z-30 flex items-center justify-between px-8 pt-6">
+        <h1 class="text-6xl text-[#c7dcf7] font-jarvis-logo tracking-wider uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+          JARVIS
+        </h1>
+        <div class="flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full bg-[#c7dcf7] shadow-[0_0_8px_#c7dcf7]"></span>
+          <span class="text-2xl tracking-wider text-[#c7dcf7] font-avengero uppercase">
+            ONLINE
+          </span>
+        </div>
+      </header>
+
+      <!-- Central Arc Reactor Stage -->
+      <div
+        id="heroStage"
+        class="absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-700 ease-in-out pointer-events-none"
+      >
+        <div id="heroText" class="text-center transition-opacity duration-500 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+          <p class="text-[#e2efff] text-3xl font-bold tracking-wider leading-none">
+            HELLO, I AM JARVIS
+          </p>
+          <p class="text-[#e2efff] text-3xl font-bold tracking-wider leading-tight mt-1">
+            WHAT CAN I DO FOR YOU TODAY?
+          </p>
+        </div>
+      </div>
+
+      <!-- Chat Bubble Container -->
+      <main
+        id="chat"
+        class="relative z-20 flex-1 overflow-y-auto px-4 sm:px-12 pt-28 pb-32 space-y-4 max-w-6xl mx-auto w-full"
+      >
+        <div id="messages" class="space-y-4"></div>
+      </main>
+
+      <!-- Input Bar Section -->
+      <footer class="composer-footer relative z-30 w-full max-w-6xl mx-auto px-3 sm:px-4 pb-7">
+        <div class="flex items-center gap-3">
+          <!-- Text Input Field using Figma Gradient -->
+          <div class="flex-1 relative h-[60px] rounded-xl bg-input-gradient shadow-lg shadow-black/40 flex items-center">
+            <input
+              id="input"
+              type="text"
+              placeholder="TYPE A MESSAGE"
+              autocomplete="off"
+              class="w-full bg-transparent px-6 text-xl font-jarvis-ui tracking-wider text-[#0b1a2d] placeholder-[#0b1a2d]/70 focus:outline-none uppercase"
+            />
+          </div>
+
+          <!-- Send Action Button -->
+          <button
+            id="sendBtn"
+            onclick="send()"
+            title="Send Message"
+            class="send-btn transition-all flex items-center justify-center active:scale-95 hover:brightness-110"
+          >
+            <img
+              src="../assets/send.png"
+              alt="Send"
+              class="w-6 h-6 object-contain filter invert drop-shadow"
+            />
+          </button>
+
+          <!-- Stop / Cancel Action Button -->
+          <button
+            id="stopBtn"
+            onclick="stopResponse()"
+            title="Stop Response"
+            class="stop-btn transition-all flex items-center justify-center active:scale-95 hover:brightness-110"
+          >
+            <img
+              src="../assets/stop.png"
+              alt="Stop"
+              class="w-6 h-6 object-contain filter invert drop-shadow"
+            />
+          </button>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      let controller = null;
+      let hasStarted = false;
+
+      function activateChatMode() {
+        if (hasStarted) return;
+        hasStarted = true;
+
+        const stage = document.getElementById("heroStage");
+        const text = document.getElementById("heroText");
+
+        text.style.opacity = "0";
+        stage.classList.remove("justify-center");
+        stage.classList.add("justify-start", "pt-3");
+      }
+
+      function stopResponse() {
+        if (controller) {
+          controller.abort();
+          controller = null;
+        }
+      }
+
+      async function send(text = null) {
+        const input = document.getElementById("input");
+        const messages = document.getElementById("messages");
+        const msg = (text || input.value).trim();
+        if (!msg) return;
+
+        activateChatMode();
+
+        const userDiv = document.createElement("div");
+        userDiv.className = "message-row user animate-message";
+        userDiv.innerHTML = `
+          <div class="chat-bubble user-bubble">
+            <p class="chat-text">${escapeHtml(msg)}</p>
+            <span class="chat-time">${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+          </div>
+        `;
+        messages.appendChild(userDiv);
+        input.value = "";
+        scrollToBottom();
+
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "message-row jarvis animate-message";
+        typingDiv.id = "typing";
+        typingDiv.innerHTML = `
+          <div class="chat-bubble jarvis-bubble typing-bubble">
+            <span></span><span></span><span></span>
+          </div>
+        `;
+        messages.appendChild(typingDiv);
+        scrollToBottom();
+
+        try {
+          controller = new AbortController();
+          const res = await fetch("http://127.0.0.1:8000/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg }),
+            signal: controller.signal,
+          });
+
+          if (!res.ok) throw new Error(await res.text());
+
+          typingDiv.remove();
+
+          const botDiv = document.createElement("div");
+          botDiv.className = "message-row jarvis animate-message";
+          botDiv.innerHTML = `
+            <div class="chat-bubble jarvis-bubble">
+              <p class="chat-text response-text"></p>
+              <span class="chat-time">${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+            </div>
+          `;
+          messages.appendChild(botDiv);
+          const botText = botDiv.querySelector(".response-text");
+
+          const reader = res.body.getReader();
+          const decoder = new TextDecoder();
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            botText.textContent += decoder.decode(value);
+            scrollToBottom();
+          }
+        } catch (error) {
+          const typing = document.getElementById("typing");
+          if (typing) typing.remove();
+
+          if (error.name === "AbortError") {
+            const stopDiv = document.createElement("div");
+            stopDiv.className = "message-row jarvis animate-message";
+            stopDiv.innerHTML = `
+              <div class="chat-bubble jarvis-bubble">
+                <p class="chat-text">Operation Aborted</p>
+              </div>
+            `;
+            messages.appendChild(stopDiv);
+          }
+        }
+        scrollToBottom();
+      }
+
+      function scrollToBottom() {
+        const chat = document.getElementById("chat");
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+      function escapeHtml(value) {
+        const container = document.createElement("div");
+        container.textContent = value;
+        return container.innerHTML;
+      }
+
+      document.getElementById("input").addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          send();
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") stopResponse();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from backend.api.chat import router as chat_router
+from backend.api.command import router as command_router
+from backend.api.health import router as health_router
+from backend.api.routes import *
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(chat_router)
+app.include_router(command_router)
+app.include_router(health_router)
