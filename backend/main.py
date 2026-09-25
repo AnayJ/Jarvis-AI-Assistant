@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
-app.mount("../assets", StaticFiles(directory="/app/assets"), name="assets")
+app.mount("/assets", StaticFiles(directory="/app/assets"), name="assets")
 
 app = FastAPI()
 
